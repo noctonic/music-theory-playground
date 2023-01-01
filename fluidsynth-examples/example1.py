@@ -22,6 +22,7 @@ time.sleep(1.0)
 
 fs.delete()
 """
+$ echo "inst 1" | fluidsynth Chrono\ Trigger.sf2
 000-000 piano
 000-001 pianom
 000-002 pianol
