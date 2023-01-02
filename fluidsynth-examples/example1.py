@@ -5,7 +5,7 @@ fs = fluidsynth.Synth()
 fs.start()
 
 sfid = fs.sfload('Chrono Trigger.sf2')  # replace path as needed
-for preset in range(0,100):
+for preset in range(0,5):
     fs.program_select(0, sfid, 0, preset)
 
     fs.noteon(0, 60, 30)
