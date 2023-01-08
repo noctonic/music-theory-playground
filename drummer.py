@@ -6,7 +6,7 @@ This modules defines the Drummer class
 from mingus.containers import Track, Bar, Composition, NoteContainer, Note
 from mingus.core import progressions, value
 from mingus.containers.instrument import MidiPercussionInstrument
-from drum_patterns import patterns
+from drum_patterns import patterns, fractal_random
 import random
 
 class Drummer(object):
@@ -20,8 +20,24 @@ class Drummer(object):
         self._num_bars_played = 0
         self._pattern_name = pattern_name
         if self._pattern_name == None:
-            self._pattern_name = "the_funky_drummer"
-        self.pattern = patterns[self._pattern_name]
+            self._pattern_name = "fractal_random"
+            self.pattern = {
+                            "length": 16,
+                            "kick":         random.choice(fractal_random),
+                            "snare":        random.choice(fractal_random),
+                            "closed_hi_hat":random.choice(fractal_random),
+                            "open_hi_hat":  random.choice(fractal_random),
+                            "ride":         [0]*16,
+                            "tambourine":   [0]*16,
+                            "hi_bell":      [0]*16,
+                            "lo_bell":      [0]*16,
+                            "clap":         [0]*16,
+                            "lo_conga":     [0]*16,
+                            "hi_conga":     [0]*16,
+                        }
+        else:
+            self.pattern = patterns[self._pattern_name]
+        self.temp_pattern = {}
         self.md = MidiPercussionInstrument()
         self.kick = self.md.acoustic_bass_drum()
         self.kick.channel = 9
@@ -55,14 +71,32 @@ class Drummer(object):
             self._pattern_name = "the_funky_drummer"
         self.pattern = patterns[self._pattern_name]
 
-    def get_bar(self,Mute=False):
+    def get_bar(self,Mute=False,Fill=False):
         
         b = Bar(self._key, self._time_signature)
         if Mute:
-            for beat in range(self.pattern["length"]):
-                b.place_notes(None, value.sixteenth)
-            self._num_bars_played += 1
-            return b
+            self.temp_pattern = self.pattern
+            self.pattern = {
+    "length": 16,
+    "kick":         [0]*16,
+    "snare":        [0]*16,
+    "closed_hi_hat":[0]*16,
+    "open_hi_hat":  [0]*16,
+    "ride":         [0]*16,
+    "tambourine":   [0]*16,
+    "hi_bell":      [0]*16,
+    "lo_bell":      [0]*16,
+    "clap":         [0]*16,
+    "lo_conga":     [0]*16,
+    "hi_conga":     [0]*16,
+}
+        
+        if Fill:
+            self.temp_pattern = self.pattern
+            self.pattern["kick"][8:16] = random.choice(fractal_random)[8:16]
+            self.pattern["snare"][8:16] = random.choice(fractal_random)[8:16]
+            self.pattern["closed_hi_hat"][8:16] = random.choice(fractal_random)[8:16]
+            self.pattern["open_hi_hat"][8:16] = random.choice(fractal_random)[8:16]
         
         c = 0
         for beat in range(self.pattern["length"]):
@@ -96,7 +130,8 @@ class Drummer(object):
             else:
                 b.place_notes(None, value.sixteenth)  
             c +=1
-
+        if Fill or Mute:
+            self.pattern = self.temp_pattern
         self._num_bars_played += 1
         return b
 
