@@ -95,8 +95,8 @@ class Drummer(object):
             self.temp_pattern = self.pattern
             self.pattern["kick"][8:16] = random.choice(fractal_random)[8:16]
             self.pattern["snare"][8:16] = random.choice(fractal_random)[8:16]
-            self.pattern["closed_hi_hat"][8:16] = random.choice(fractal_random)[8:16]
-            self.pattern["open_hi_hat"][8:16] = random.choice(fractal_random)[8:16]
+            #self.pattern["closed_hi_hat"][8:16] = random.choice(fractal_random)[8:16]
+            #self.pattern["open_hi_hat"][8:16] = random.choice(fractal_random)[8:16]
         
         c = 0
         for beat in range(self.pattern["length"]):

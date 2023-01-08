@@ -6,7 +6,7 @@ from drummer import Drummer
 class SimpleSong:
     def __init__(self):
         self.key = "C"
-        self.total_bars = 64
+        self.total_bars = 32
         self.time_signature = (4, 4)
         self.composition = Composition()
         self.song_name = "percussion_example"
@@ -21,18 +21,16 @@ class SimpleSong:
        
         
         for bar_num in range(self.total_bars//4):
-            drummer.change_pattern("amen_brother_part_1")
+           
             b = drummer.get_bar()
             t.add_bar(b)
-            drummer.change_pattern("amen_brother_part_2")
-            b = drummer.get_bar(Fill=True)
-            t.add_bar(b)
-            drummer.change_pattern("amen_brother_part_3")
+            b = drummer.get_bar()
+            t.add_bar(b)           
             b = drummer.get_bar()
             t.add_bar(b)
-            drummer.change_pattern("amen_brother_part_4")
             b = drummer.get_bar(Fill=True)
             t.add_bar(b)
+
         self.tracks["percussion"] = t
         self.composition.add_track(t)
         return t
